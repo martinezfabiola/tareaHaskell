@@ -35,3 +35,15 @@ validate tarjetadeCredito
   | (rem (sumDigitos (duplicarCadaOtro (aDigitos tarjetadeCredito))) 10 == 0) = True
   | otherwise = False
 -- validate tarjetadeCredito = sumDigitos (duplicarCadaOtro (aDigitosRev tarjetadeCredito)) `mod` 10 == 0
+
+data ArbBinario = L | N BinTree Bintree deriving (Eq, Show)
+
+-- Crea arbol binario completo de tamano 2(n+1)-1
+crearArbBinario 0 = L 
+crearArbBinario n = N (crearArbBinario(n-1))(crearArbBinario(n-1))
+
+-- Calcula el tamano del arbol 
+tam L = 1
+tam (N t1 t2) = 1 + tam t1 + tam t2
+
+
