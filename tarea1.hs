@@ -10,10 +10,12 @@
 --
 -- February, 2018.
 
+---- Exercise one: luhn's algorithm
+
 aDigitos :: Integer -> [Integer]
-aDigitos numTarjeta
--- numTarjeta is 0 or is negative then return []
-  | numTarjeta > 0 = aDigitos (numTarjeta `div` 10) ++ [numTarjeta `mod` 10]
+aDigitos x
+  -- x is 0 or is negative then return []
+  | x > 0 = aDigitos (x `div` 10) ++ [x `rem` 10]
   | otherwise = []
 
 aDigitosRev :: Integer -> [Integer]
@@ -21,32 +23,18 @@ aDigitosRev = reverse . aDigitos
 
 duplicarCadaOtro :: [Integer] -> [Integer]
 duplicarCadaOtro [] = []
-duplicarCadaOtro (primerDigito:[]) = [primerDigito]
-duplicarCadaOtro (primerDigito:segundoDigito:restoDigitos) = (primerDigito*2):segundoDigito:duplicarCadaOtro restoDigitos
+duplicarCadaOtro (x:[]) = [x]
+duplicarCadaOtro (x:y:xs) = x:(y*2):duplicarCadaOtro xs
+
+separarDigitos :: [Integer] -> [Integer]
+separarDigitos [] = []
+separarDigitos (x:[]) = if x < 10 then [x] else aDigitos x
+separarDigitos (x:xs) = (if x < 10 then [x] else aDigitos x) ++ separarDigitos xs
 
 sumDigitos :: [Integer] -> Integer
-sumDigitos [] = 0
-sumDigitos (p:resto) = p + sumDigitos resto
+sumDigitos x = sum x 
 
 validate :: Integer -> Bool
-validate tarjetadeCredito
-  | (mod (sumDigitos (duplicarCadaOtro (aDigitosRev tarjetadeCredito))) 10 == 0) = True
-  | otherwise = False
--- validate tarjetadeCredito = sumDigitos (duplicarCadaOtro (aDigitosRev tarjetadeCredito)) `mod` 10 == 0
-
-data ArbBinario = L | N BinTree Bintree | N1 Bintree deriving (Eq, Show) 
-
--- Crea arbol binario completo de tamano 2(n+1)-1
-crearArbBinario 0 = L 
-crearArbBinario n = N (crearArbBinario(n-1))(crearArbBinario(n-1))
-
-hacerABinTree :: Integer -> Integer -> ArbBinario
-hacerABinTree s n 
-	| (2*n) + 1 <= s -> N (hacerABinTree s ((2*n)) (hacerABinTree s ((2*n) + 1))
-	| (2*n) <=  s -> N1 (hacerABinTree((2*n))
-	| otherwise L
-
--- Calcula el tamano del arbol 
-tam L = 1
-tam (N t1 t2) = 1 + tam t1 + tam t2
-tamanom (N1 t3) = 1 + tam t3
+validate numTarjetaCredito
+  | (numTarjetaCredito < 0) = False
+  | otherwise = (sumDigitos (separarDigitos (duplicarCadaOtro (aDigitosRev numTarjetaCredito))) `rem` 10 == 0)
