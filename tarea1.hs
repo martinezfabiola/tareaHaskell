@@ -10,7 +10,7 @@
 --
 -- February, 2018.
 
----- Exercise one: luhn algorithm's
+---- Exercise one: luhn's algorithm
 
 aDigitos :: Integer -> [Integer]
 aDigitos x
