@@ -1,7 +1,7 @@
 -- Universidad Simón Bolívar
 -- CI3661: Programming Languages I
 --
--- Tarea 1 Haskell
+-- Activity 1 Haskell
 --
 -- Authors:
 --
@@ -10,26 +10,32 @@
 --
 -- February, 2018.
 
--- Definimos el arbol binario
+-- Binary Tree will be defined
 data ArbBinario = Hoja
                 | N ArbBinario ArbBinario 
                 | N1 ArbBinario deriving (Eq, Show) 
 
--- Funcion que crea arbol binario dado el tamano  
+-- Function that creates binary tree with any size and a node
 hacerABinTree :: Integer -> Integer -> ArbBinario
 hacerABinTree tamano nodo
  | (2*nodo) + 1 <= tamano = N (hacerABinTree tamano (2*nodo)) (hacerABinTree tamano ((2*nodo) + 1))
  | 2*nodo <=  tamano = N1 (hacerABinTree  tamano (2*nodo))
  | otherwise = Hoja
 
--- Funcion que calcula el tamano de un arbol binario
+-- Function that calculates binary tree's size 
 calcularTamano :: ArbBinario  -> Integer
 calcularTamano Hoja = 1
 calcularTamano (N arbI arbD) = 1 + (calcularTamano arbI)+ (calcularTamano arbD)
 calcularTamano (N1 arb) = 1 + (calcularTamano arb)
 
--- Funcion que calcula la profund de un arbol binario
+-- Function that calculate binary tree's depth
 calcularProfundidad :: ArbBinario -> Integer
 calcularProfundidad Hoja = 1
 calcularProfundidad (N arb1 arb2) = 1 + max (calcularProfundidad arb1) (calcularProfundidad arb2)
 calcularProfundidad (N1 arb) = 1 + calcularProfundidad arb
+
+-- Principal Function that creates a binary tree of any size
+crearArbBinario :: Integer -> ArbBinario
+crearArbBinario tamano
+ | tamano <= 0 = []
+ | otherwise = hacerABinTree tamano 1
