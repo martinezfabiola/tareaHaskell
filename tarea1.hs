@@ -10,40 +10,31 @@
 --
 -- February, 2018.
 
+---- Exercise one: luhn algorithm's
+
 aDigitos :: Integer -> [Integer]
-aDigitos numTarjeta
--- numTarjeta is 0 or is negative then return []
-  | numTarjeta > 0 = aDigitos (numTarjeta `div` 10) ++ [numTarjeta `mod` 10]
+aDigitos x
+  -- x is 0 or is negative then return []
+  | x > 0 = aDigitos (x `div` 10) ++ [x `rem` 10]
   | otherwise = []
 
 aDigitosRev :: Integer -> [Integer]
-aDigitosRev numTarjeta
-| numTarjeta <= 10 = [numTarjeta]
-| otherwise = reverse . aDigitos
+aDigitosRev = reverse . aDigitos
 
 duplicarCadaOtro :: [Integer] -> [Integer]
 duplicarCadaOtro [] = []
-duplicarCadaOtro (primerDigito:[]) = [primerDigito*2]
-duplicarCadaOtro (primerDigito:segundoDigito:restoDigitos) = primerDigito:(segundoDigito*2):duplicarCadaOtro restoDigitos
+duplicarCadaOtro (x:[]) = [x]
+duplicarCadaOtro (x:y:xs) = x:(y*2):duplicarCadaOtro xs
+
+separarDigitos :: [Integer] -> [Integer]
+separarDigitos [] = []
+separarDigitos (x:[]) = if x < 10 then [x] else aDigitos x
+separarDigitos (x:xs) = (if x < 10 then [x] else aDigitos x) ++ separarDigitos xs
 
 sumDigitos :: [Integer] -> Integer
-sumDigitos [] = 0
-sumDigitos (p:resto) = p + sumDigitos resto
+sumDigitos x = sum x 
 
 validate :: Integer -> Bool
-validate tarjetadeCredito
-  | (rem (sumDigitos (duplicarCadaOtro (aDigitos tarjetadeCredito))) 10 == 0) = True
-  | otherwise = False
--- validate tarjetadeCredito = sumDigitos (duplicarCadaOtro (aDigitosRev tarjetadeCredito)) `mod` 10 == 0
-
-data ArbBinario = L | N BinTree Bintree deriving (Eq, Show)
-
--- Crea arbol binario completo de tamano 2(n+1)-1
-crearArbBinario 0 = L 
-crearArbBinario n = N (crearArbBinario(n-1))(crearArbBinario(n-1))
-
--- Calcula el tamano del arbol 
-tam L = 1
-tam (N t1 t2) = 1 + tam t1 + tam t2
-
-
+validate numTarjetaCredito
+  | (numTarjetaCredito < 0) = False
+  | otherwise = (sumDigitos (separarDigitos (duplicarCadaOtro (aDigitosRev numTarjetaCredito))) `rem` 10 == 0)
