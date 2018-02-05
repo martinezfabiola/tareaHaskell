@@ -17,12 +17,14 @@ aDigitos numTarjeta
   | otherwise = []
 
 aDigitosRev :: Integer -> [Integer]
-aDigitosRev = reverse . aDigitos
+aDigitosRev numTarjeta
+| numTarjeta <= 10 = [numTarjeta]
+| otherwise = reverse . aDigitos
 
 duplicarCadaOtro :: [Integer] -> [Integer]
 duplicarCadaOtro [] = []
-duplicarCadaOtro (primerDigito:[]) = [primerDigito]
-duplicarCadaOtro (primerDigito:segundoDigito:restoDigitos) = (primerDigito*2):segundoDigito:duplicarCadaOtro restoDigitos
+duplicarCadaOtro (primerDigito:[]) = [primerDigito*2]
+duplicarCadaOtro (primerDigito:segundoDigito:restoDigitos) = primerDigito:(segundoDigito*2):duplicarCadaOtro restoDigitos
 
 sumDigitos :: [Integer] -> Integer
 sumDigitos [] = 0
@@ -30,6 +32,6 @@ sumDigitos (p:resto) = p + sumDigitos resto
 
 validate :: Integer -> Bool
 validate tarjetadeCredito
-  | (mod (sumDigitos (duplicarCadaOtro (aDigitosRev tarjetadeCredito))) 10 == 0) = True
+  | (rem (sumDigitos (duplicarCadaOtro (aDigitos tarjetadeCredito))) 10 == 0) = True
   | otherwise = False
 -- validate tarjetadeCredito = sumDigitos (duplicarCadaOtro (aDigitosRev tarjetadeCredito)) `mod` 10 == 0
