@@ -18,10 +18,10 @@ data ArbBinario = Hoja
 -- Function that creates binary tree with any size and a node
 -- Following algorithms and data structures II 
 hacerABinTree :: Integer -> ArbBinario
-construirArbBin 0 = error"No se puede crear"
-construirArbBin 1 = Hoja
-construirArbBin 2 = N1 (Hoja)
-construirArbBin n = N(construirArbBin (x+y)) (construirArbBin(x))
+hacerABinTree 0 = error"No se puede crear"
+hacerABinTree 1 = Hoja
+hacerABinTree 2 = N1 (Hoja)
+hacerABinTree n = N(hacerABinTree (x+y)) (hacerABinTree(x))
  where
   x = (n-1) `div` 2
   y = (n-1) `mod` 2
@@ -34,6 +34,6 @@ calcularTamano (N1 arb) = 1 + (calcularTamano arb)
 
 -- Function that calculate binary tree's depth
 calcularProfundidad :: ArbBinario -> Integer
-calcularProfundidad Hoja = 1
+calcularProfundidad Hoja = 0
 calcularProfundidad (N arb1 arb2) = 1 + max (calcularProfundidad arb1) (calcularProfundidad arb2)
 calcularProfundidad (N1 arb) = 1 + calcularProfundidad arb
