@@ -39,7 +39,7 @@ separarDigitos (x:xs) = (if x < 10 then [x] else aDigitos x) ++ separarDigitos x
 sumDigitos :: [Integer] -> Integer
 sumDigitos x = sum x 
 
--- Principal function that verificates if a credit card number is valid
+-- Main function that verifies if a credit card number is valid
 validate :: Integer -> Bool
 validate numTarjetaCredito
   | (numTarjetaCredito < 0) = False
