@@ -13,7 +13,7 @@ Problema 2: La mochila
 
 import Data.List
 
-type Pesos a = [(a, Integer)]
+type Peso a = [(a, Integer)]
 type Valor a = [(a, Integer)]
 
 -- obtenemos todos los subconjuntos posibles
@@ -22,7 +22,7 @@ posiblesItems []  = [[]]
 posiblesItems (x:xs) = posiblesItems xs ++ map (x:) (posiblesItems xs)
 
 -- filtra por pesos menores a iguales a la capacidad de la mochila
-filtrarMaxPesos :: Integer -> [Pesos a] -> [Pesos a] 
+filtrarMaxPesos :: Integer -> [Peso a] -> [Peso a] 
 filtrarMaxPesos capacidadMochila listaPesos  = filter aux listaPesos
  where
     aux x = sum(map snd x) <= capacidadMochila
@@ -32,16 +32,16 @@ obtenerListaItem :: [[(a, Integer)]] -> [[a]]
 obtenerListaItem lista = map fst (map unzip lista)
 
 -- dado un item devuelve la tupla con su peso
-compararAux2 :: Eq a => Pesos a -> a -> (a, Integer)
+compararAux2 :: Eq a => Peso a -> a -> (a, Integer)
 compararAux2 listaValores item = head (filter (\(x,_) -> x == item) listaValores)
 
 -- dada una lista de item devueve una lista de items con su respectivo peso
-obtenerPesos :: Eq a => [[a]] -> Pesos a -> [Pesos a]
+obtenerPesos :: Eq a => [[a]] -> Peso a -> [Peso a]
 obtenerPesos items valorItems1 = map comparar items
  where comparar x = map (compararAux2 valorItems1) x
 
 -- devuelve una lista con los posibles pesos candidatos
-aplicarFiltrarMaxPesos :: Eq a => [a] -> Integer -> Pesos a -> [Pesos a]
+aplicarFiltrarMaxPesos :: Eq a => [a] -> Integer -> Peso a -> [Peso a]
 aplicarFiltrarMaxPesos items capacidadMochila listaPesos = filtrarMaxPesos capacidadMochila (obtenerPesos (posiblesItems items) listaPesos)
 
 -- dado un item devuelve la tupla con su valor
@@ -66,7 +66,5 @@ filtrarMaxVal :: [([a],Integer)] -> [[a]]
 filtrarMaxVal candidatos = map fst (filter (\(_,x) -> x == maximum (map snd candidatos)) candidatos)
 
 -- aplica todas las funciones anteriores para resolver el problema de la mochila
-problemaMochila :: Eq a => [a] -> Integer -> Pesos a -> Valor a -> [[a]]
-problemaMochila items capacidadMochila listaPesos listaValores = filtrarMaxVal (obtenerMaxValor (obtenerValores (obtenerListaItem(aplicarFiltrarMaxPesos items capacidadMochila listaPesos) listaValores)))
-
-
+problemaMochila :: Eq a => [a] -> Integer -> Peso a -> Valor a -> [[a]]
+problemaMochila items capacidadMochila listaPesos listaValores = filtrarMaxVal (obtenerMaxValor (obtenerValores (obtenerListaItem (aplicarFiltrarMaxPesos items capacidadMochila listaPesos)) listaValores))
